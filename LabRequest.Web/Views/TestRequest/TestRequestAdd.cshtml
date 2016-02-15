@@ -1,0 +1,153 @@
+﻿@using System
+@using System.Linq
+@using LabRequest.DomainModel.Entities
+@using LabRequest.DomainModel.Repository
+@model LabRequest.Web.ViewModel.TestRequestViewModel          
+@{
+    ViewBag.Title = "درخواستهای غیر روتین";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4>
+                    <i class="fa fa-plus fa-lg"></i>&#160ثبت درخواست جدید</h4>
+            </div>
+            <div class="panel-body">
+                @if (ViewData.ModelState.Any())
+                {
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert">×</a>
+                        <h4>
+                            <i class="fa fa-warning"></i>&#160هشدار</h4>
+                        @Html.ValidationSummary()
+                    </div>
+                }
+                @using (Html.BeginForm())
+                {         
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RequestType)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sticky-note-o fa-lg"></i></span>
+                                    @Html.DropDownList("RequestType",
+                                        new SelectList(Enum.GetValues(typeof(EnumCollection.RequestGenRequestType))),
+                                        new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RequestPriority)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-sort-amount-desc fa-lg"></i></span>
+                                    @Html.DropDownList("RequestPriority",
+                                    new SelectList(Enum.GetValues(typeof(EnumCollection.RequestGenStatus))),
+                                    new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Company)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-industry fa-lg"></i></span>
+                                    @Html.DropDownListFor(x => x.Company,
+                                    (SelectList)ViewBag.Companies,
+                                    new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Unit)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-building fa-lg"></i></span>
+                                    @Html.DropDownListFor(x => x.Unit, (SelectList)ViewBag.Units, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.SampleName)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-flask fa-lg"></i></span>
+                                    @Html.TextBoxFor(x => x.SampleName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RequestPersonName)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user-md fa-lg"></i></span>
+                                    @Html.TextBoxFor(x => x.RequestPersonName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RequestDate)
+                                @* <div class="input-group">
+                                    <div class="input-group-addon" data-mddatetimepicker="true" data-trigger="click"
+                                        data-targetselector="#RequestDate" data-todate="true" data-enabletimepicker="false">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                    @Html.TextBoxFor(x => x.RequestDate, new { @class = "form-control", @readonly = "readonly" })
+                                </div>*@
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <span class="fa fa-calendar fa-lg"></span>
+                                    </div>
+                                    @Html.TextBoxFor(x => x.RequestDate,
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        @readonly = "readonly",
+                                        Value = new DateTimeRepository().GetLocalDate
+                                    })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.LotNumber)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-500px fa-lg"></i></span>
+                                    @Html.TextBoxFor(x => x.LotNumber, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.RequestTitle)
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clipboard fa-lg"></i></span>
+                                    @Html.DropDownListFor(x => x.RequestTitle,
+                                    (SelectList)ViewBag.RequestTitles,
+                                    new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="dvCheckBoxListControl">
+                        <div class="form-group">
+                        </div>
+                    </div>
+                    <div class="form-group pull-left">
+                        @*<button type="submit" id="btnSave" name="btnSave" class="btn btn-primary disabled"><i class="fa fa-save fa-lg"></i>&#160ثبت درخواست</button>*@
+                        <button type="submit" id="btnSave" name="btnSave" class="btn btn-lg btn-primary">
+                            <i class="fa fa-save fa-lg"></i>
+                        </button>
+                        <a href="@Url.Action("TestRequestList", "TestRequest")" class="btn btn-default btn-lg">
+                            <i class="fa fa-lg fa-close"></i></a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

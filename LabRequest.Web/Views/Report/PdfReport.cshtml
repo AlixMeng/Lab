@@ -1,0 +1,169 @@
+﻿@model  LabRequest.Web.ViewModel.ReportViewModel
+@using System.Linq
+@using LabRequest.DomainModel.Repository
+@{
+    ViewBag.Title = "گزارش درخواستهای غیر روتین";
+}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4>
+            <i class="fa fa-print fa-lg"></i>&#160گزارش درخواستهای غیر روتین
+        </h4>
+    </div>
+    <div class="panel-body">
+        @if (ViewData.ModelState.Any())
+        { 
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert">×</a>
+                <h4>
+                    <i class="fa fa-warning"></i>&#160هشدار
+                </h4>
+                @Html.ValidationSummary()
+            </div>
+        }
+        @using (Html.BeginForm())
+        { 
+            @Html.AntiForgeryToken()                       
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div class="form-group">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary btn_red active">
+                                @Html.RadioButtonFor(x => x.ReportType, "r1", new { @checked = "checked" })<i class="fa fa-file"></i>&#160نتایج
+                                درخواستها
+                            </label>
+                            <label class="btn btn-primary btn_red">
+                                @Html.RadioButtonFor(x => x.ReportType, "r2")<i class="fa fa-file"></i>&#160لیست
+                                نتایج انجام شده
+                            </label>
+                            <label class="btn btn-primary btn_red">
+                                @Html.RadioButtonFor(x => x.ReportType, "r3")<i class="fa fa-file"></i>&#160لیست
+                                وضعیت تستهای درخواست شده
+                            </label>
+                            <label class="btn btn-primary btn_red">
+                                @Html.RadioButtonFor(x => x.ReportType, "r4")<i class="fa fa-file"></i>&#160درخواستهای
+                                شرکت
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportCompany)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-industry fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportCompany, (SelectList)ViewBag.Companies, string.Empty,
+                            new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportUnit)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportUnit, (SelectList)ViewBag.Units, string.Empty,
+                            new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportRequestTitle)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa  fa-clipboard fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportRequestTitle, (SelectList)ViewBag.RequstTitles, string.Empty,
+                            new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportTestName)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-flask fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportTestName, (SelectList)ViewBag.Tests, string.Empty,
+                            new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportSampleType)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-eyedropper fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportSampleType, (SelectList)ViewBag.SampleType, string.Empty,
+                            new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportSampleName)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-tag fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportSampleName, (SelectList)ViewBag.SampleName, string.Empty,
+                                new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportRequestNo)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span>
+                            @Html.TextBoxFor(x => x.ReportRequestNo, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportFromDate)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
+                            @Html.TextBoxFor(x => x.ReportFromDate,
+                                new
+                                {
+                                    @class = "form-control",
+                                    Value = new DateTimeRepository().GetLocalDate
+                                })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportToDate)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span>
+                            @Html.TextBoxFor(x => x.ReportToDate,
+                                new
+                                {
+                                    @class = "form-control",
+                                    Value = new DateTimeRepository().GetLocalDate
+                                })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.ReportRequestState)
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-toggle-on fa-lg"></i></span>
+                            @Html.DropDownListFor(x => x.ReportRequestState,
+                                (SelectList)ViewBag.RequestState, string.Empty,
+                                new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group pull-left">
+                        <label>&#160</label>
+                        <div class="input-group">
+                            <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-print fa-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        }
+    </div>
+</div>

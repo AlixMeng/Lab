@@ -1,0 +1,44 @@
+﻿@model CaptchaMvc.Models.MathBuildInfoModel
+<div class="form-group">
+    <div class="text-center">
+        <img id="@Model.ImageElementId" class="img-thumbnail" src="@Model.ImageUrl" alt="" />
+    </div>
+    @Html.Hidden(Model.TokenElementId, Model.TokenValue)
+    @{
+        string id = Guid.NewGuid().ToString("N");
+        string functionName = string.Format("______{0}________()", Guid.NewGuid().ToString("N"));
+        <script type="text/javascript">
+        $(function () {
+            $('#@id').show();
+        });
+
+        function @functionName {
+            $('#@id').hide();
+            $.post("@Model.RefreshUrl",            
+             { @Model.TokenParameterName:$('#@Model.TokenElementId').val(),
+              @Model.MathParamterName: "0" }, 
+               function () {
+                $('#@id').show();
+            });
+            return false;
+        }
+        </script>
+
+
+        <div class="pull-left">
+            <a href="#@id" id="@id" class="fa fa-refresh fa-lg"  onclick="@functionName"></a>
+        </div>
+
+
+    }
+    @Html.TextBox(Model.InputElementId,
+null,
+new Dictionary<string, object>() 
+{ 
+    { "data-val", "true" }, 
+    { "data-val-required", "لطفا پاسخ تصویر را وارد کنید" },
+    { "class", "form-control" },
+    { "placeholder", "جواب تصویر" }
+})
+    @*@Html.ValidationMessage(Model.InputElementId, new { @class = "text-danger" })*@
+</div>

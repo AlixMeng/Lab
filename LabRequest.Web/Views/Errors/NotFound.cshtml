@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "404-خطا";
+}
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-md-offset-3">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h4>
+                    <i class="fa fa-hand-pointer-o fa-lg"></i>&#160Error-404</h4>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-danger text-center">
+                    زمان اتصال به سامانه تمام شده و یا آدرس مورد نظر یافت نشد</div>
+                    <a href="@Url.Action("Login", "Account")" class="btn btn-default">خروج</a>
+            </div>
+        </div>
+    </div>
+</div>

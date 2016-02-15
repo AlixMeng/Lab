@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabRequest.Web", "LabRequest.Web\LabRequest.Web.csproj", "{D7DB7B44-B320-4A21-8FE9-0628909DB68D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabRequest.DomainModel", "LabRequest.DomainModel\LabRequest.DomainModel.csproj", "{3206321A-2603-4E85-8E0F-AB464D5119F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabRequest.Test", "LabRequest.Test\LabRequest.Test.csproj", "{6A6F428C-2217-438B-959E-218FFC4AAFB9}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LabRequest.Web.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7DB7B44-B320-4A21-8FE9-0628909DB68D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7DB7B44-B320-4A21-8FE9-0628909DB68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7DB7B44-B320-4A21-8FE9-0628909DB68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7DB7B44-B320-4A21-8FE9-0628909DB68D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3206321A-2603-4E85-8E0F-AB464D5119F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3206321A-2603-4E85-8E0F-AB464D5119F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3206321A-2603-4E85-8E0F-AB464D5119F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3206321A-2603-4E85-8E0F-AB464D5119F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A6F428C-2217-438B-959E-218FFC4AAFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6F428C-2217-438B-959E-218FFC4AAFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6F428C-2217-438B-959E-218FFC4AAFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6F428C-2217-438B-959E-218FFC4AAFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

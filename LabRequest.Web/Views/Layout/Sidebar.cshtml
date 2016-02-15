@@ -1,0 +1,41 @@
+﻿@using LabRequest.DomainModel.Repository
+@using LabRequest.Web.Infrastracture
+@{
+    Layout = null;
+    var user = new UserRepository().GetUser(User.Identity.Name, int.Parse(CookieEncryptor.Decrypt(Request.Cookies["LabRequest-Cookie"].Value))).PersonFamily;
+}
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <i class="fa fa-user"></i>&#160کاربر سیستم
+    </div>
+    <div class="panel-body">
+        <h4 class="text-muted">@user</h4>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-cog"></i>&#160کنترل پنل
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+            <a href="@Url.Action("TestRequestAdd", "TestRequest")" class="list-group-item"><i class="fa fa-tags"></i>&#160صدور درخواست جدید</a>
+            <a href="@Url.Action("TestRequestList","TestRequest")" class="list-group-item"><i class="fa fa-list"></i>&#160لیست درخواستهای ثب شده</a>
+            <a href="@Url.Action("Logout","Account")" class="list-group-item"><i class="fa fa-power-off"></i>&#160خروج از سیستم</a>
+        </div>
+    </div>
+</div>
+@*<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-search"></i>&#160عملیات جستجو
+    </div>
+    <div class="panel-body">
+        <div class="btn-group btn-group-sm">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="#">Create</a> <a href="#">Delete</a> <a href="#">Update</a> </li>
+            </ul>
+        </div>
+    </div>
+</div>*@ 

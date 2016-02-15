@@ -1,0 +1,187 @@
+﻿@model PagedList.IPagedList<LabRequest.DomainModel.Entities.TestRequestGenerateUsers>
+@using LabRequest.DomainModel.Repository
+@using LabRequest.Web.Infrastracture
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "لیست درخواستهای تولید شده";
+    var user = new UserRepository().GetUser(User.Identity.Name, int.Parse(CookieEncryptor.Decrypt(Request.Cookies["LabRequest-Cookie"].Value))).PersonFamily;
+}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4>
+            <i class="fa fa-list fa-lg"></i>&#160لیست درخواست های ثبت شده <span class="pull-left">
+                درخواست کننده:@user</span>
+        </h4>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            <div class="input-group">
+                @Html.TextBox("searchstring",
+                ViewBag.CurrentFilter as string,
+                new
+                {
+                    @class = "form-control",
+                    @placeholder = "جستجوی شماره پیگیری"
+                })
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        }
+        <div class="table-responsive">
+            <table class="table table-striped" id="tblNewAttendees">
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="@Url.Action("TestRequestList", "TestRequest", new
+                            {
+                                sortorder = ViewBag.RequestNoSortParm,
+                                currentfilter = ViewBag.CurrentFilter
+                            })"><i class="fa @ViewBag.RequestNoFaIcon"></i>شماره پیگیری درخواست</a>
+                        </th>
+                        <th>
+                            <a href="@Url.Action("TestRequestList", "TestRequest", new
+                            {
+                                sortorder = ViewBag.ReqDateSortParm,
+                                currentfilter = ViewBag.CurrentFilter
+                            })"><i class="fa @ViewBag.ReqDateFaIcon"></i>تاریخ ثبت درخواست</a>
+                        </th>
+                        <th>
+                            <a href="@Url.Action("TestRequestList", "TestRequest", new
+                            {
+                                sortorder = ViewBag.RequestTimeSortParm,
+                                currentfilter = ViewBag.CurrentFilter
+                            })"><i class="fa @ViewBag.RequestTimeFaIcon"></i>ساعت ثبت درخواست</a>
+                        </th>
+                        <th>
+                            <a href="@Url.Action("TestRequestList", "TestRequest", new
+                            {
+                                sortorder = ViewBag.SampleNameSortParm,
+                                currentfilter = ViewBag.CurrentFilter
+                            })"><i class="fa @ViewBag.SampleNameFaIcon"></i>نام نمونه آزمایش</a>
+                        </th>
+                        <th>
+                            <a href="@Url.Action("TestRequestList", "TestRequest", new
+                            {
+                                sortorder = ViewBag.LatNoSortParm,
+                                currentfilter = ViewBag.CurrentFilter
+                            })"><i class="fa @ViewBag.LatNoFaIcon"></i>LotNo</a>
+                        </th>
+                        @*<th>
+                        <a href="@Url.Action("TestRequestList", "TestRequest", new
+                            {
+                                sortorder = ViewBag.PersonFamilySortParm,
+                                currentfilter = ViewBag.CurrentFilter
+                            })"><i class="fa @ViewBag.PersonFamilyFaIcon"></i>درخواست کننده</a>
+                    </th>*@
+                        <th>
+                            جزئــیات
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var items in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(x => items.TestRequestId)
+                                @items.RequestNo
+                            </td>
+                            <td>@items.ReqDate
+                                @Html.HiddenFor(x => items.RequestGenId)
+                            </td>
+                            <td>@items.RequestTime
+                            </td>
+                            <td>@items.SampleName
+                            </td>
+                            <td>@items.LatNo
+                            </td>
+                            @*<td>@items.PersonFamily</td>*@
+                            <td>
+                                @if (items.Confirm.Trim() == "N")
+                                {
+                                    <a class="btn btn-sm btn-primary btndetail" data-toggle="modal" data-target=".my-modal-sm"
+                                        href="#"><i class="fa fa-wrench"></i></a>                            
+                                }
+                                else
+                                { 
+                                    <a class="btn btn-sm btn-success btndetail" data-toggle="modal" data-target=".my-modal-sm"
+                                        href="#"><i class="fa fa-check"></i></a>           
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="pager pagination-sm">
+            @Html.PagedListPager(Model,
+            page => Url.Action("TestRequestList",
+            new
+            {
+                page = page,
+                sortorder = ViewBag.CurrentSort,
+                currentFilter = ViewBag.CurrentFilter
+            }), new PagedListRenderOptions
+            {
+                DisplayLinkToFirstPage = true,
+                DisplayLinkToLastPage = true,
+                DisplayLinkToPreviousPage = true,
+                DisplayLinkToNextPage = true,
+                DisplayLinkToIndividualPages = true,
+                DisplayPageCountAndCurrentLocation = false,
+                MaximumPageNumbersToDisplay = 5,
+                DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+                //EllipsesFormat = "&#8230;",
+                LinkToFirstPageFormat = "ابتدا",
+                LinkToPreviousPageFormat = "قبلی",
+                LinkToIndividualPageFormat = "{0}",
+                LinkToNextPageFormat = "بعدی",
+                LinkToLastPageFormat = "انتها",
+                //PageCountAndCurrentLocationFormat = "Page {0} of {1}.",
+                //ItemSliceAndTotalFormat = "Showing items {0} through {1} of {2}.",
+                FunctionToDisplayEachPageNumber = null,
+                ClassToApplyToFirstListItemInPager = null,
+                ClassToApplyToLastListItemInPager = null,
+                ContainerDivClasses = new[] { "pagination-container" },
+                UlElementClasses = new[] { "pagination" },
+            }
+            )
+        </div>
+    </div>
+</div>
+<div class="modal fade my-modal-sm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                    <i class="fa fa-list"></i>&#160 جزئیات درخواست</h4>
+            </div>
+            <div class="modal-body">
+                <div id="result">
+                </div>
+            </div>
+            <div class="modal-footer">
+                @* @if (new UserRepository()
+                    .PersonPermission(new UserRepository()
+                    .GetUser(User.Identity.Name).PersonId, 102))
+                {
+                    <button type="button" id="btnconfirm" class="btn btn-primary">
+                        <i class="fa fa-save"></i>&#160تایید
+                    </button>
+                }*@ @*<button type="button" class="btn btn-default" data-dismiss="modal">انصراف</button>*@
+                <button type="button" class="btn btn-lg btn-default" data-dismiss="modal">
+                    <i class="fa fa-close"></i>
+                </button>
+                @*<span id="alert"></span>*@
+            </div>
+        </div>
+    </div>
+</div>
